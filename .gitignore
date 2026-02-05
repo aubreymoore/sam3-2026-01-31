@@ -8,6 +8,7 @@ wheels/
 
 *.sqlite3
 annotated_images/
+images_for_sam3_post/
 
 # Virtual environments
 .venv
