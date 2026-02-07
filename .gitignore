@@ -9,6 +9,11 @@ wheels/
 *.sqlite3
 annotated_images/
 images_for_sam3_post/
+"Google Gemini.html"
+"Google Gemini_files"/
+output_coords.csv
+shape_features.csv
+temp_csv/
 
 # Virtual environments
 .venv

@@ -9,5 +9,6 @@ dependencies = [
     "icecream>=2.1.10",
     "ipywidgets>=8.1.8",
     "pandas>=3.0.0",
+    "shapely>=2.1.2",
     "ultralytics>=8.4.9",
 ]
