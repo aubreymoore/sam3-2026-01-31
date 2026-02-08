@@ -4,6 +4,21 @@ from icecream import ic
 import gc
 import torch
 
+import numpy as np
+
+
+def test_efd():
+    # Create a dummy "star" shape with noise to simulate a complicated boundary
+    t_orig = np.linspace(0, 2*np.pi, 100)
+    r = 10 + 3*np.sin(5*t_orig) + np.random.normal(0, 0.2, 100)
+    x_orig = r * np.cos(t_orig)
+    y_orig = r * np.sin(t_orig)
+    contour = np.column_stack([x_orig, y_orig])
+    rs.visualize_harmonics(contour, [1,10, 20, 30, 40, 50])
+    
+# test_efd()
+
+
 def test_all() -> None:
     """ 
     # Runs only if GPU is available.
