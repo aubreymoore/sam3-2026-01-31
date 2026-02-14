@@ -37,7 +37,7 @@ import os
 import pandas as pd
 from pathlib import Path
 import sqlite3
-# from icecream import ic
+from icecream import ic
 # import glob
 
 
@@ -330,10 +330,12 @@ def calculate_efd(contour:np.ndarray, harmonics:int=20) -> np.ndarray:
 
     # Ensure the contour is closed
     if not np.allclose(contour[0], contour[-1]):
+        ic('closing contour')
         contour = np.vstack([contour, contour[0]])
 
     dxy = np.diff(contour, axis=0)
     dt = np.sqrt((dxy**2).sum(axis=1))
+    ic(np.min(dt))
     t = np.concatenate([[0], np.cumsum(dt)])
     T = t[-1]
 
@@ -346,6 +348,7 @@ def calculate_efd(contour:np.ndarray, harmonics:int=20) -> np.ndarray:
         bn = factor * np.sum((dxy[:, 0] / dt) * (np.sin(term * t[1:]) - np.sin(term * t[:-1])))
         cn = factor * np.sum((dxy[:, 1] / dt) * (np.cos(term * t[1:]) - np.cos(term * t[:-1])))
         dn = factor * np.sum((dxy[:, 1] / dt) * (np.sin(term * t[1:]) - np.sin(term * t[:-1])))
+         
         coeffs[n-1] = [an, bn, cn, dn]
     return coeffs
 

@@ -10,6 +10,8 @@ dependencies = [
     "ipywidgets>=8.1.8",
     "nbconvert>=7.17.0",
     "pandas>=3.0.0",
+    "plotly>=6.5.2",
+    "scikit-learn>=1.8.0",
     "shapely>=2.1.2",
     "ultralytics>=8.4.9",
 ]
