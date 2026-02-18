@@ -40,12 +40,6 @@ import sqlite3
 from icecream import ic
 # import glob
 
-
-
-
-# # Usage example:
-# check_os_working()
-
 def conv_poly_from_array_to_wkt(poly: np.array) -> str:
     return Polygon(poly).wkt
 
@@ -197,118 +191,211 @@ def run_sam3_semantic_predictor(input_image_path, text_prompts):
 
 # These functions are used for building a SQLite database of images and their detected objects
 
-def update_images_table(image_path, db_path):
-    """ 
-    Saves data for a single image into an 'images' table in a SQLite database. 
-    If the image contains embedded EXIF metadata, GIS coordinates are extracted and saved. and saves it in a SQLite database.
-    If the database exists, one record is appended. Otherwise, a new database is created before adding the record.
+# def update_images_table(image_path, db_path):
+#     """ 
+#     Saves data for a single image into an 'images' table in a SQLite database. 
+#     If the image contains embedded EXIF metadata, GIS coordinates are extracted and saved. and saves it in a SQLite database.
+#     If the database exists, one record is appended. Otherwise, a new database is created before adding the record.
 
-    Args:
-        image_path (str): Path to the image file.
-        db_path (str): Path to the SQLite database file.
-    Returns:
-        None
+#     Args:
+#         image_path (str): Path to the image file.
+#         db_path (str): Path to the SQLite database file.
+#     Returns:
+#         None
+#     """
+
+#     with open(image_path, 'rb') as f:
+#         imgx = exif.Image(f)
+
+#     if imgx.has_exif:
+
+#         # to see all available exif_data  use imgx.get_all()
+
+#         exif_data = {
+#             'image_path': image_path,
+#             'image_width': imgx.image_width,
+#             'image_height': imgx.image_height,
+#             'timestamp': imgx.datetime
+#         }
+
+#         d, m, s = imgx.gps_latitude
+#         latitude = d + m/60 + s/3600   
+#         if imgx.gps_latitude_ref == 'S':
+#             latitude = -latitude  
+#         exif_data['latitude']  = latitude   
+
+#         d, m, s = imgx.gps_longitude
+#         longitude = d + m/60 + s/3600   
+#         if imgx.gps_longitude_ref == 'W':
+#             longitude = -longitude
+#         exif_data['longitude'] = longitude
+#     else:
+#         exif_data = {
+#             'image_path': image_path,
+#             'image_width': None,
+#             'image_height': None,
+#             'timestamp': None,
+#             'latitude': None,
+#             'longitude': None
+#         }
+#     df_image = pd.DataFrame([exif_data])
+
+#     # Connect to the SQLite database (creates if it doesn't exist)
+#     conn = sqlite3.connect(db_path)
+#     # cursor = conn.cursor()
+#     df_image.to_sql(name='images', con=conn, if_exists='append', index=False)
+#     conn.close()
+    
+    
+def get_data_for_images_table(results_cpu, image_path: str) -> tuple:
+    """ 
+    Gets data for for a single image for insertion as a record in the 'images' database table. 
+    Returns data as a tuple: (image_width, image_height, timestamp, latitude, longitude)
+    image_width and image_height come from results_cpu
+    timestamp, latitude, longitude come from the EXIF metadata embedded in the image, if it exists. 
     """
+
+    image_height = results_cpu[0].orig_shape[0]
+    image_width = results_cpu[0].orig_shape[1]
 
     with open(image_path, 'rb') as f:
         imgx = exif.Image(f)
 
     if imgx.has_exif:
-
-        # to see all available exif_data  use imgx.get_all()
-
-        exif_data = {
-            'image_path': image_path,
-            'image_width': imgx.image_width,
-            'image_height': imgx.image_height,
-            'timestamp': imgx.datetime
-        }
-
+        # to see all available exif_data use imgx.get_all()
+        
+        # timestamp
+        timestamp = imgx.datetime
+            
+        # latitude
         d, m, s = imgx.gps_latitude
         latitude = d + m/60 + s/3600   
         if imgx.gps_latitude_ref == 'S':
             latitude = -latitude  
-        exif_data['latitude']  = latitude   
 
+        # longitude
         d, m, s = imgx.gps_longitude
         longitude = d + m/60 + s/3600   
         if imgx.gps_longitude_ref == 'W':
             longitude = -longitude
-        exif_data['longitude'] = longitude
+        longitude
     else:
-        exif_data = {
-            'image_path': image_path,
-            'image_width': None,
-            'image_height': None,
-            'timestamp': None,
-            'latitude': None,
-            'longitude': None
-        }
-    df_image = pd.DataFrame([exif_data])
+        timestamp = None
+        latitude = None
+        longitude= None
+    
+    return (image_width, image_height, timestamp, latitude, longitude)
 
-    # Connect to the SQLite database (creates if it doesn't exist)
-    conn = sqlite3.connect(db_path)
-    # cursor = conn.cursor()
-    df_image.to_sql(name='images', con=conn, if_exists='append', index=False)
-    conn.close()
+# image_path = image_paths[0]
+# results_gpu = rs.run_sam3_semantic_predictor(input_image_path=image_path, text_prompts=text_prompts)
+# results_cpu = [r.cpu() for r in results_gpu] # copy results to CPU
+# delete_results_from_gpu_memory() # Clear GPU memory after processing each image
+# get_data_for_images_table(results_cpu)
 
 
-def update_detections_table(results, image_path, db_path):
+# def update_detections_table(results, image_path, db_path):
+
+#     # Process detection results (assuming one image for simplicity: results[0])
+#     result = results[0]
+
+#     # --- Extract Bounding Box Data into a DataFrame ---
+#     # The .boxes.data attribute is a tensor containing [x_min, y_min, x_max, y_max, confidence, class]
+#     boxes_data = result.boxes.data.tolist()
+#     df_boxes = pd.DataFrame(boxes_data, columns=['x_min', 'y_min', 'x_max', 'y_max', 'confidence', 'class_id'])
+
+#     # Add class names for readability
+#     # class_names = model.names
+#     # df_boxes['class_name'] = df_boxes['class_id'].apply(lambda x: class_names[int(x)])
+
+#     # --- Extract Segmentation Mask Data ---
+#     # Masks are more complex as they represent pixel-wise information or polygon points.
+#     # To put this into a DataFrame, you could store the polygon points list for each object.
+#     masks_data = []
+#     # Iterate over each detected object's mask
+#     for i, mask in enumerate(result.masks.xy):
+#         # mask.xy contains the polygon points as a list of [x, y] coordinates
+#         # You can associate this with the corresponding entry in the bounding box DataFrame
+
+#         poly_arr = mask
+#         poly_wkt = conv_poly_from_array_to_wkt(poly_arr)
+
+#         masks_data.append({
+#             'image_path': image_path,
+#             'object_index': i, 
+#             'class_id': df_boxes.iloc[i]['class_id'], 
+#             'poly_wkt': poly_wkt})
+#         df_masks = pd.DataFrame(masks_data)  
+
+#     # merge df_masks and df_detections  
+#     df_detections = pd.merge(df_masks, df_boxes, how="outer", left_index=True, right_index=True)
+
+#     # Connect to the SQLite database (creates if it doesn't exist)
+#     conn = sqlite3.connect(db_path)
+#     # cursor = conn.cursor()
+#     df_detections.to_sql(name='detections', con=conn, if_exists='append', index=False)
+#     conn.close()
+
+
+def get_data_for_detections_table(results_cpu, image_id:int)->pd.DataFrame:
+    """ 
+    Gets data for for a single image for insertion as records in the 'detections' database table. 
+    Returns data as a pandas dataframe containing columns for image_id, class_id, poly_wkt, x_min, y_min, x_max, y_max, confidence
+    """
 
     # Process detection results (assuming one image for simplicity: results[0])
-    result = results[0]
+    result = results_cpu[0]
 
-    # --- Extract Bounding Box Data into a DataFrame ---
-    # The .boxes.data attribute is a tensor containing [x_min, y_min, x_max, y_max, confidence, class]
+    # create a pandas dataframe for bounding boxes
     boxes_data = result.boxes.data.tolist()
     df_boxes = pd.DataFrame(boxes_data, columns=['x_min', 'y_min', 'x_max', 'y_max', 'confidence', 'class_id'])
 
-    # Add class names for readability
-    # class_names = model.names
-    # df_boxes['class_name'] = df_boxes['class_id'].apply(lambda x: class_names[int(x)])
-
-    # --- Extract Segmentation Mask Data ---
-    # Masks are more complex as they represent pixel-wise information or polygon points.
-    # To put this into a DataFrame, you could store the polygon points list for each object.
+    # create a pandas dataframe for segmentation masks (polygons)
     masks_data = []
     # Iterate over each detected object's mask
     for i, mask in enumerate(result.masks.xy):
-        # mask.xy contains the polygon points as a list of [x, y] coordinates
-        # You can associate this with the corresponding entry in the bounding box DataFrame
-
         poly_arr = mask
         poly_wkt = conv_poly_from_array_to_wkt(poly_arr)
 
         masks_data.append({
-            'image_path': image_path,
-            'object_index': i, 
+            # 'image_path': image_path,
+            # 'object_index': i, 
             'class_id': df_boxes.iloc[i]['class_id'], 
             'poly_wkt': poly_wkt})
         df_masks = pd.DataFrame(masks_data)  
 
     # merge df_masks and df_detections  
     df_detections = pd.merge(df_masks, df_boxes, how="outer", left_index=True, right_index=True)
+    
+    # clean database
+    df_detections['image_id'] = image_id
+    df_detections.rename(columns={'class_id_x': 'class_id'}, inplace=True)
+    df_detections.drop(['class_id_y'], inplace=True, axis='columns')
+    df_detections = df_detections.astype({'class_id': int, 'x_min': int, 'y_min': int, 'x_max': int, 'y_max': int})
 
-    # Connect to the SQLite database (creates if it doesn't exist)
-    conn = sqlite3.connect(db_path)
-    # cursor = conn.cursor()
-    df_detections.to_sql(name='detections', con=conn, if_exists='append', index=False)
-    conn.close()
+    return df_detections
+
+# image_path = image_paths[0]
+# results_gpu = rs.run_sam3_semantic_predictor(input_image_path=image_path, text_prompts=text_prompts)
+# results_cpu = [r.cpu() for r in results_gpu] # copy results to CPU
+# delete_results_from_gpu_memory() # Clear GPU memory after processing each image
+# get_data_for_images_table(results_cpu)
+# fake_image_id = 999
+# get_data_for_detections_table(results_cpu, image_id=fake_image_id)    
 
 
-def build_database(image_path, results, db_path):
-    """ 
-    Builds a SQLite database with 'images' and 'detections' tables from a list of image paths.
+# def build_database(image_path, results, db_path):
+#     """ 
+#     Builds a SQLite database with 'images' and 'detections' tables from a list of image paths.
 
-    Args:
-        image_path (str): Path to an image file.
-        results (list): List of detection results from model.
-        db_path (str): Path to the SQLite3 database file.
-    Returns:
-        None
-    """
-    update_images_table(image_path, db_path)
-    update_detections_table(results, image_path, db_path)
+#     Args:
+#         image_path (str): Path to an image file.
+#         results (list): List of detection results from model.
+#         db_path (str): Path to the SQLite3 database file.
+#     Returns:
+#         None
+#     """
+#     update_images_table(image_path, db_path)
+#     update_detections_table(results, image_path, db_path)
 
 ##############
 # from efd2.py
