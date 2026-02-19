@@ -5,7 +5,7 @@
 Docstring for roadside.py
 
 Aubrey Moore (aubreymoore2013@gmail.com)
-Last modified: 2026-02-07
+Last modified: 2026-02-19
 
 This module provides python functions for building automated detection of coconut rhinoceros beetle 
 damage in digital images.
@@ -43,10 +43,10 @@ def conv_poly_from_array_to_wkt(poly: np.array) -> str:
 
 
 def conv_poly_from_wkt_to_array(poly_wkt: str) -> np.array:
-    return np.array(shapely.from_wkt(poly_wkt).exterior.coords)
+    return np.array(shapely.from_wkt(poly_wkt).exterior.coords, dtype=np.int32)
 
 # # Usage example:
-#
+
 # poly_wkt = 'POLYGON((0 0, 0 40, 40 40, 40 0, 0 0))'
 # ic(conv_poly_from_wkt_to_array(poly_wkt));
 
