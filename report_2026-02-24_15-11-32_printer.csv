@@ -1,4 +1,4 @@
-page,detection_id,accept,damaged_with_vcuts,reject,crowd,damaged_without_vcuts,occluded,dead
+page,detection_id,is_accepted,is_damaged_with_vcuts,is_rejected,is_crowd,is_damaged_without_vcuts,is_occluded,is_dead
 3,27,True,True,False,False,False,False,False
 5,26,True,True,False,False,False,False,False
 7,17,True,True,False,False,False,False,False

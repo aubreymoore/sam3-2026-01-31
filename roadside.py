@@ -24,12 +24,48 @@ import gc
 from time import sleep
 import shapely
 from shapely.geometry import Polygon
+from shapely import wkt
+from shapely.affinity import affine_transform
 
 import matplotlib.pyplot as plt
 from scipy.ndimage import median_filter, gaussian_filter1d
 from scipy.spatial.distance import euclidean
 from pathlib import Path
 from icecream import ic
+
+
+def flip_wkt_origin(wkt_string:str, image_height:int) -> str:
+    """
+    Transforms a WKT polygon from top-left origin to bottom-left origin.
+    
+    Formula:
+    x' = x
+    y' = height - y
+    """
+    # Load the polygon from the WKT string
+    poly = wkt.loads(wkt_string)
+    
+    # Define the transformation matrix (affine_transform)
+    # [a, b, d, e, xoff, yoff] 
+    # represents:
+    # x' = ax + by + xoff
+    # y' = dx + ey + yoff
+    # To get y' = -y + height, we set e = -1 and yoff = image_height
+    matrix = [1, 0, 0, -1, 0, image_height]
+    
+    transformed_poly = affine_transform(poly, matrix)
+    
+    return transformed_poly.wkt
+
+# --- Example Usage ---
+# image_h = 1000
+# original_wkt = "POLYGON ((100 100, 200 100, 200 200, 100 200, 100 100))"
+
+# new_wkt = flip_wkt_origin(original_wkt, image_h)
+
+# print(f"Original:  {original_wkt}")
+# print(f"Corrected: {new_wkt}")
+
 
 
 def conv_poly_from_array_to_wkt(poly: np.array) -> str:
@@ -177,13 +213,16 @@ def get_data_for_detections_table(results_cpu, image_id:int)->pd.DataFrame:
     for i, mask in enumerate(result.masks.xy):
         poly_arr = mask
         poly_wkt = conv_poly_from_array_to_wkt(poly_arr)
+        poly_wkt_c = flip_wkt_origin(poly_wkt, image_height=result.orig_shape[0]) # correct for coordinate system origin
 
         masks_data.append({
             # 'image_path': image_path,
             # 'object_index': i, 
             'class_id': df_boxes.iloc[i]['class_id'], 
-            'poly_wkt': poly_wkt})
-        df_masks = pd.DataFrame(masks_data)  
+            'poly_wkt': poly_wkt,
+            'poly_wkt_c': poly_wkt_c
+        })
+    df_masks = pd.DataFrame(masks_data)  
 
     # merge df_masks and df_detections  
     df_detections = pd.merge(df_masks, df_boxes, how="outer", left_index=True, right_index=True)
