@@ -1,5 +1,20 @@
+---
+title: Technical Notes for ~/Desktop/sam3-2026-01-31
+author: "Aubrey Moore"
+date: "March 11, 2026"
+geometry: "a4paper, margin=1.5cm"
+documentclass: article
+fontsize: 12pt
+urlcolor: blue
+toc: true
+---
+
 # Technical Notes for sam3-2026-01-31
 
+To convert of this file to a PDF with an index:
+```
+pandoc tech_notes.md -o tech_notes.pdf
+```
 ## Jupyter notebooks
 
 Metadata extracted using `ls -lt *.ipynb`
@@ -35,21 +50,135 @@ Metadata extracted using `ls -lt *.ipynb`
         `rs.get_data_for_detections_table`
 
 ### Feb 27 09:51 sam3-2026-01-31.ipynb
+
+- replaced by 2026-02-14.ipynb?
+
 ### Feb 24 16:50 rtest.ipynb
+
+- evaluation of running the R Momocs library using `rpy2`
+- I decided to use `pyefd` instead of the `Momocs` R library
+
 ### Feb 24 15:38 visualizer.ipynb
+
+- This Jupyter notebook visualizes detections of coconut palms in images using data from an SQLite database.
+
+- Each detection is visualized using a bound box and polygon overlay applied to the original image.
+
+- Report generation
+    -This notebook generates a markdown report which can be converted to a PDF using `pandoc`.
+    This PDF can then be used to create metadata for images using `okular` or some other PDF editor.
+    The idea is to hightlight keywords associated with images.
+
 ### Feb 18 13:24 pca.ipynb
+
+- This notebook explores principal component analysis of elliptic fourier descriptors to differentiate shapes of coconut palms detected in images.
+
 ### Feb 18 09:10 processing_videos.ipynb
+
+- This notebook evaluation of `SAM3VideoSemanticPredictor` to scan videos from roadside surveys of CRB damage. Using videos instead of still images may me advantageous in handling occluded objects.
+
 ### Feb 14 07:33 sqlite_tables.ipynb
+
+- superceded by `2026-02-14.ipynb`?
+
 ### Feb  7 08:50 wkt.ipynb
+
+- legacy?
+
 ### Feb  7 05:00 efd2.ipynb
+
+- superceded by `poly2mask.ipynb`?
+
 ### Feb  6 06:56 efd.ipynb
+
+- superceded by `efd2.ipynb`?
 
 ## Python scripts
 
 ### Mar  6 08:26 pyefd_example.py
+
+- An example showing how to use pyefd for fitting points along a closed curve.
+
 ### Mar  3 17:28 am_ptools_tests.py
+
+- Creates a matplotlib figure with a list of plots arranged in a specified number of columns.
+
 ### Mar  3 17:25 am_ptools.py
+
+- Unit tests for `am_ptools.py`
+
 ### Feb 27 14:30 roadside.py
+
+- IMPORTANT
+- Python modules containing functions for my CRB roadside surveys project
+
 ### Feb  8 08:20 test_roadside.py
+
+- test code for `roadside.py`
+
 ### Feb  8 06:58 efd2.py
-### Jan 31 14:07 main.py
+
+- "raw" python code for EFD
+- I don't remember where I got this
+- may be better to stick with source code for `pyefd`
+
+## Lit search
+
+#### "elliptic fourier descriptors" "deviation analysis"
+
+https://share.google/aimode/SoLZS1m3UGNv6EbGS
+
+Finding direct, permanent PDF links for academic papers can be tricky due to paywalls and shifting URL structures. However, I have compiled the list below using **DOI (Digital Object Identifier)** links or **PubMed/Open Access** links, which are the most reliable ways to access the full-text versions.
+
+For several of these, you may need institutional access, but many (marked as **Open Access**) are freely available to the public.
+
+---
+
+### Citations with Full-Text Links
+
+1. **Bonhomme, V., et al. (2014).** "Momocs: Outline Analysis Using R." *Journal of Statistical Software*.
+**[[Open Access PDF]](https://www.jstatsoft.org/article/view/v056i13/v56i13.pdf)**
+2. **Ge, X., et al. (2021).** "A Deep Learning-Based Method for Fruit Shape Phenotyping in Strawberry." *Frontiers in Plant Science*.
+**[[Open Access PDF]](https://www.google.com/search?q=https://www.frontiersin.org/articles/10.3389/fpls.2021.631835/pdf)**
+3. **Kuhl, F. P., & Giardina, C. R. (1982).** "Elliptic Fourier features of a closed contour." *Computer Graphics and Image Processing*.
+**[[Full Text via ScienceDirect]](https://doi.org/10.1016/0146-664X(82)90034-X)** *(Requires login/purchase)*
+4. **Li, M., et al. (2020).** "Analysis of Leaf Morphological Characters of *Zelkova serrata* Based on Elliptic Fourier Descriptors." *Forests*.
+**[[Open Access PDF]](https://www.google.com/search?q=https://www.mdpi.com/1999-4907/11/8/875/pdf)**
+5. **Martinez-Abadias, N., et al. (2018).** "Quantifying facial shape variation in Chagas disease using Elliptic Fourier Descriptors." *PLOS Neglected Tropical Diseases*.
+**[[Open Access PDF]](https://www.google.com/search?q=https://journals.plos.org/plosntds/article/file%3Fid%3D10.1371/journal.pntd.0006871%26type%3Dprintable)**
+6. **Migicovsky, Z., et al. (2018).** "Patterns of Genotype-Phenotype Associations in Apple." *New Phytologist*.
+**[[Full Text via Wiley Online Library]](https://nph.onlinelibrary.wiley.com/doi/full/10.1111/nph.14627)**
+7. **Sievänen, J., et al. (2022).** "Automatic identification of fish species using shape analysis of scales." *Fisheries Research*.
+**[[Full Text via ResearchGate]](https://www.google.com/search?q=https://www.researchgate.net/publication/358170068_Automatic_identification_of_fish_species_using_shape_analysis_of_scales)**
+8. **Smith, A., & Williams, J. (2019).** "Quantifying the Morphology of Prehistoric Stone Tools through Elliptic Fourier Analysis." *Journal of Archaeological Science: Reports*.
+**[[Full Text via DOI]](https://www.google.com/search?q=https://doi.org/10.1016/j.jasrep.2018.11.026)**
+9. **Wang, H., et al. (2023).** "Grain shape characterization of calcareous sand based on Elliptic Fourier Descriptors." *Bulletin of Engineering Geology and the Environment*.
+**[[Full Text via Springer]](https://www.google.com/search?q=https://link.springer.com/article/10.1007/s10064-023-03112-w)**
+10. **Zhang, C., et al. (2022).** "DeepMorph: A high-throughput software for zebra fish scale morphometrics." *Methods in Ecology and Evolution*.
+**[[Open Access PDF]](https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/2041-210X.13943)**
+
+---
+
+### Quick Tip for Access
+
+If you encounter a paywall for any of the non-Open Access links, you can often find a legal "Author's Original" or "Pre-print" version by searching the title on [Google Scholar](https://scholar.google.com) and looking for the **[PDF]** link on the right-hand side of the search results.
+
+**Would you like me to help you format these into a specific bibliography style, such as APA or BibTeX?**
+
+## Sphinx
+
+- YouTube: https://youtu.be/VcPVfmmsfa4?si=4BXmQ9K8HGBL5Ure
+
+
+- To add `sphinx` to an existing project see https://share.google/aimode/1uhFoPCQjXAXef18H
+- To update documentation:
+```
+source .venv/bin/activate
+cd docs
+make html
+```
+
+
+## Ruff
+
+https://youtu.be/828S-DMQog8
