@@ -19,5 +19,6 @@ dependencies = [
     "scikit-learn>=1.8.0",
     "shapely>=2.1.2",
     "sphinx>=9.1.0",
+    "sphinx-autodoc-typehints>=3.9.8",
     "ultralytics>=8.4.9",
 ]

@@ -165,18 +165,116 @@ If you encounter a paywall for any of the non-Open Access links, you can often f
 
 **Would you like me to help you format these into a specific bibliography style, such as APA or BibTeX?**
 
-## Sphinx
-
-- YouTube: https://youtu.be/VcPVfmmsfa4?si=4BXmQ9K8HGBL5Ure
 
 
-- To add `sphinx` to an existing project see https://share.google/aimode/1uhFoPCQjXAXef18H
-- To update documentation:
+## Sphinx documentation
+
+#### Installed sphinx as a global tools using
 ```
-source .venv/bin/activate
+uv run install sphinx
+```
+#### Check installation
+```
+sphinx-build --version
+```
+#### Add a sphinx docs directory by executing this command from the top directory of the project
+```
+sphinx-quickstart docs
+```
+#### Create html files
+```
 cd docs
 make html
 ```
+Sphinx docs for the project can now be viewed by opening `docs/_build/html/index.html` in a web browser.
+
+#### Edit `docs/conf.py` to look something like this example.
+```python
+# Configuration file for the Sphinx documentation builder.
+#
+# For the full list of built-in configuration values, see the documentation:
+# https://www.sphinx-doc.org/en/master/usage/configuration.html
+
+import sys
+
+# Add the project root directory to sys.path
+sys.path.insert(0, "/home/aubrey/Desktop/lumache/")
+
+# -- Project information -----------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+
+project = "Lumache"
+copyright = "2026, Aubrey Moore"
+author = "Aubrey Moore"
+release = "0.1"
+
+# -- General configuration ---------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
+
+extensions = [
+    "sphinx.ext.duration",
+    "sphinx.ext.doctest",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx_autodoc_typehints",
+]
+
+templates_path = ["_templates"]
+exclude_patterns = []
+
+
+# -- Options for HTML output -------------------------------------------------
+# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
+
+html_theme = "alabaster"
+html_static_path = ["_static"]
+
+```
+
+#### Create a `docs/usage.rst` file using this example
+```
+Usage
+=====
+
+Installation
+------------
+
+To use Lumache, first install it using pip:
+
+.. code-block:: console
+
+   (.venv) $ pip install lumache
+
+Creating recipes
+----------------
+
+To retrieve a list of random ingredients,
+you can use the ``lumache.get_random_ingredients()`` function:
+
+.. autofunction:: lumache.get_random_ingredients()
+.. autofunction:: lumache.add_numbers()
+
+```
+
+#### Add a link to `docs/usage.rst` in `docs/index.rst`
+```
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   usage
+```
+
+#### Regenerate html
+```
+cd docs
+make html
+```
+If `make html` fails with errors, fix them and try again.
+
+For example, when `exception: No module named 'sphinx_autodoc_typehints'` was reported,
+I simply executed fixed this using `uv add sphinx-autodoc-typehints`.
+
 
 
 ## Ruff
