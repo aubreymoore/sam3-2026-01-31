@@ -12,13 +12,31 @@ exports: ["pdf"]
 
 # Technical Notes for sam3-2026-01-31
 
-```{warning}
-We believe in a community-driven approach of open-source tools that are composable and extensible.
-```
 ````{note}
 To convert of this file to a PDF with an index:
 ```
 pandoc tech_notes.md -o tech_notes.pdf
+```
+````
+
+````{note}
+This document was written using MystMD. It is part of documentation for a project named `sam3-2026-01-31`
+which is managed by `Sphinx` using the `myst_parser` extension to read `MystMD` documents such as this one and the `autoapi` extension to automatically extract documentation from `docstrings` in `python` files (See `docs/conf.py`).
+
+To update project documentation 
+```
+cd docs
+sphinx-build -E . _build/html
+```
+Explanation of parameters
+```
+-E                     don't use a saved environment, always read all files
+SOURCE_DIR .           path to documentation source files; `docs` in this case
+OUTPUT_DIR _build/html path to output directory; `_build/html` in this case
+```
+To see all possible parameters
+```
+sphinx-build -h
 ```
 ````
 
@@ -136,7 +154,7 @@ ls -lt *.ipynb
 
 ## Lit search
 
-#### "elliptic fourier descriptors" "deviation analysis"
+### "elliptic fourier descriptors" "deviation analysis"
 
 https://share.google/aimode/SoLZS1m3UGNv6EbGS
 
@@ -181,26 +199,26 @@ If you encounter a paywall for any of the non-Open Access links, you can often f
 
 ## Sphinx documentation
 
-#### Installed sphinx as a global tools using
+### Installed sphinx as a global tools using
 ```
 uv run install sphinx
 ```
-#### Check installation
+### Check installation
 ```
 sphinx-build --version
 ```
-#### Add a sphinx docs directory by executing this command from the top directory of the project
+### Add a sphinx docs directory by executing this command from the top directory of the project
 ```
 sphinx-quickstart docs
 ```
-#### Create html files
+### Create html files
 ```
 cd docs
 make html
 ```
 Sphinx docs for the project can now be viewed by opening `docs/_build/html/index.html` in a web browser.
 
-#### Edit `docs/conf.py` to look something like this example.
+### Edit `docs/conf.py` to look something like this example.
 ```python
 # Configuration file for the Sphinx documentation builder.
 #
@@ -243,7 +261,7 @@ html_static_path = ["_static"]
 
 ```
 
-#### Create a `docs/usage.rst` file using this example
+### Create a `docs/usage.rst` file using this example
 ```
 Usage
 =====
@@ -268,7 +286,7 @@ you can use the ``lumache.get_random_ingredients()`` function:
 
 ```
 
-#### Add a link to `docs/usage.rst` in `docs/index.rst`
+### Add a link to `docs/usage.rst` in `docs/index.rst`
 ```
 .. toctree::
    :maxdepth: 2
@@ -277,7 +295,7 @@ you can use the ``lumache.get_random_ingredients()`` function:
    usage
 ```
 
-#### Regenerate html
+### Regenerate html
 ```
 cd docs
 make html
@@ -292,3 +310,9 @@ I simply executed fixed this using `uv add sphinx-autodoc-typehints`.
 ## Ruff
 
 https://youtu.be/828S-DMQog8
+
+
+To create `docs/_build/html/index.html` run this from within the docs directory.
+```
+sphinx-build -E -b html . _build/html
+```

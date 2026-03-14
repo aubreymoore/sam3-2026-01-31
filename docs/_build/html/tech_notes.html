@@ -36,14 +36,30 @@
             
   <section id="technical-notes-for-sam3-2026-01-31">
 <h1>Technical Notes for sam3-2026-01-31<a class="headerlink" href="#technical-notes-for-sam3-2026-01-31" title="Link to this heading">¶</a></h1>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>We believe in a community-driven approach of open-source tools that are composable and extensible.</p>
-</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>To convert of this file to a PDF with an index:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pandoc</span> <span class="n">tech_notes</span><span class="o">.</span><span class="n">md</span> <span class="o">-</span><span class="n">o</span> <span class="n">tech_notes</span><span class="o">.</span><span class="n">pdf</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This document was written using MystMD. It is part of documentation for a project named <code class="docutils literal notranslate"><span class="pre">sam3-2026-01-31</span></code>
+which is managed by <code class="docutils literal notranslate"><span class="pre">Sphinx</span></code> using the <code class="docutils literal notranslate"><span class="pre">myst_parser</span></code> extension to read <code class="docutils literal notranslate"><span class="pre">MystMD</span></code> documents such as this one and the <code class="docutils literal notranslate"><span class="pre">autoapi</span></code> extension to automatically extract documentation from <code class="docutils literal notranslate"><span class="pre">docstrings</span></code> in <code class="docutils literal notranslate"><span class="pre">python</span></code> files (See <code class="docutils literal notranslate"><span class="pre">docs/conf.py</span></code>).</p>
+<p>To update project documentation</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">docs</span>
+<span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">E</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">html</span>
+</pre></div>
+</div>
+<p>Explanation of parameters</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>-E                     don&#39;t use a saved environment, always read all files
+SOURCE_DIR .           path to documentation source files; `docs` in this case
+OUTPUT_DIR _build/html path to output directory; `_build/html` in this case
+</pre></div>
+</div>
+<p>To see all possible parameters</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">h</span>
 </pre></div>
 </div>
 </div>
@@ -374,6 +390,10 @@ I simply executed fixed this using <code class="docutils literal notranslate"><s
 <section id="ruff">
 <h2>Ruff<a class="headerlink" href="#ruff" title="Link to this heading">¶</a></h2>
 <p>https://youtu.be/828S-DMQog8</p>
+<p>To create <code class="docutils literal notranslate"><span class="pre">docs/_build/html/index.html</span></code> run this from within the docs directory.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sphinx</span><span class="o">-</span><span class="n">build</span> <span class="o">-</span><span class="n">E</span> <span class="o">-</span><span class="n">b</span> <span class="n">html</span> <span class="o">.</span> <span class="n">_build</span><span class="o">/</span><span class="n">html</span>
+</pre></div>
+</div>
 </section>
 </section>
 
