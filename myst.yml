@@ -1,0 +1,8 @@
+version: 1
+project:
+  id: my-tech-notes
+  title: Technical Notes
+  description: My isolated build project
+  # This is the important part:
+  toc:
+    - file: tech_notes.md

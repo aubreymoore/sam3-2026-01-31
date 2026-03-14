@@ -1,23 +1,35 @@
 ---
 title: Technical Notes for ~/Desktop/sam3-2026-01-31
 author: "Aubrey Moore"
-date: "March 11, 2026"
-geometry: "a4paper, margin=1.5cm"
-documentclass: article
-fontsize: 12pt
-urlcolor: blue
-toc: true
+date: "2026-03-14"
+# geometry: "a4paper, margin=1.5cm"
+# documentclass: article
+# fontsize: 12pt
+# urlcolor: blue
+# toc: true
+exports: ["pdf"]
 ---
 
 # Technical Notes for sam3-2026-01-31
 
+```{warning}
+We believe in a community-driven approach of open-source tools that are composable and extensible.
+```
+````{note}
 To convert of this file to a PDF with an index:
 ```
 pandoc tech_notes.md -o tech_notes.pdf
 ```
+````
+
 ## Jupyter notebooks
 
-Metadata extracted using `ls -lt *.ipynb`
+````{note}
+I extracted metadata extracted for this section using
+```
+ls -lt *.ipynb
+```
+````
 
 ### Mar 10 05:06 poly2mask.ipynb
 
@@ -275,7 +287,7 @@ If `make html` fails with errors, fix them and try again.
 For example, when `exception: No module named 'sphinx_autodoc_typehints'` was reported,
 I simply executed fixed this using `uv add sphinx-autodoc-typehints`.
 
-
+`roadside.py` IS IN 2 PLACES: PROJECT ROOT AND `src/roadside`. MUST BE FIXED.
 
 ## Ruff
 
