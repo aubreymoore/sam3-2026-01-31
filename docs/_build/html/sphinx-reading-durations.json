@@ -1,4 +1,6 @@
 {
-    "index": 0.008,
-    "roadside": 1.823
+    "autoapi/index": 0.042,
+    "autoapi/roadside/index": 0.013,
+    "index": 0.002,
+    "tech_notes": 0.019
 }

@@ -25,9 +25,10 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
+    "myst_parser"
 ]
 
-autoapi_dirs = ["../src"]
+autoapi_dirs = ["../src/"]
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
