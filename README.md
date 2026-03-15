@@ -1,1 +1,1 @@
-[mydocs](aubreymoore.git.io/sam3-2026-01-31/docs/mydocs/)
+[mydocs](docs/mydocs/)
